@@ -1,11 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
+import com.udacity.jwdnd.course1.cloudstorage.model.CredentialForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
-import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
-import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
@@ -28,14 +27,21 @@ public class HomeController {
 
     private final NoteService noteService;
 
+    private final CredentialService credentialService;
+
+    private final EncryptionService encryptionService;
+
     @GetMapping
     public String getHomePage(Authentication authentication,
                               @ModelAttribute("newFile") FileForm newFile,
                               @ModelAttribute("newNote") NoteForm newNote,
+                              @ModelAttribute("newCredential") CredentialForm newCredential,
                               Model model) {
         Integer userId = getUserId(authentication);
         model.addAttribute("files", fileService.getFileList(userId));
         model.addAttribute("notes", noteService.getNoteList(userId));
+        model.addAttribute("credentials", credentialService.getCredentialList(userId));
+        model.addAttribute("encryptionService", encryptionService);
         return "home";
     }
 
