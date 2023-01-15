@@ -1,8 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
 import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
+import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
 import com.udacity.jwdnd.course1.cloudstorage.model.User;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -24,12 +26,16 @@ public class HomeController {
 
     private final FileService fileService;
 
+    private final NoteService noteService;
+
     @GetMapping
     public String getHomePage(Authentication authentication,
                               @ModelAttribute("newFile") FileForm newFile,
+                              @ModelAttribute("newNote") NoteForm newNote,
                               Model model) {
         Integer userId = getUserId(authentication);
         model.addAttribute("files", fileService.getFileList(userId));
+        model.addAttribute("notes", noteService.getNoteList(userId));
         return "home";
     }
 
