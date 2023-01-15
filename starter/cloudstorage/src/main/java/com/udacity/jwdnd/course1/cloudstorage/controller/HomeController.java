@@ -34,7 +34,7 @@ public class HomeController {
     }
 
     @GetMapping(
-            value = "/file/get/{fileName}",
+            value = "/file/{fileName}",
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
     public @ResponseBody

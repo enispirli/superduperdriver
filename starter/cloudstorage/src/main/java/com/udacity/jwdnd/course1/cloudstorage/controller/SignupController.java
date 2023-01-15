@@ -28,14 +28,13 @@ public class SignupController {
 
         if (userService.isUsernameExists(user.getUsername())) {
             validError = "Username already exists.Username: " + user.getUsername();
+            model.addAttribute("signupError", validError);
+            return "signup";
         }
 
-
-        if (validError == null) {
-            int userRow = userService.createUser(user);
-            if (userRow < 0) {
-                validError = "Something is wrong.Please try again.";
-            }
+        int userRow = userService.createUser(user);
+        if (userRow < 0) {
+            validError = "Something is wrong.Please try again.";
         }
 
         if (validError == null) {
