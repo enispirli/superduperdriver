@@ -1,12 +1,12 @@
 package com.udacity.jwdnd.course1.cloudstorage.controller;
 
-import com.udacity.jwdnd.course1.cloudstorage.model.CredentialForm;
-import com.udacity.jwdnd.course1.cloudstorage.model.FileForm;
-import com.udacity.jwdnd.course1.cloudstorage.model.NoteForm;
-import com.udacity.jwdnd.course1.cloudstorage.model.User;
+import com.udacity.jwdnd.course1.cloudstorage.model.*;
 import com.udacity.jwdnd.course1.cloudstorage.services.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,8 +50,12 @@ public class HomeController {
             produces = MediaType.APPLICATION_OCTET_STREAM_VALUE
     )
     public @ResponseBody
-    byte[] getFile(@PathVariable String fileName) {
-        return fileService.getFile(fileName).getFileData();
+    ResponseEntity<ByteArrayResource> getFile(@PathVariable String fileName) {
+        File fileData = fileService.getFile(fileName);
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(fileData.getContentType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+ fileData.getFileName()+"\"")
+                .body(new ByteArrayResource(fileData.getFileData()));
     }
 
     @PostMapping
