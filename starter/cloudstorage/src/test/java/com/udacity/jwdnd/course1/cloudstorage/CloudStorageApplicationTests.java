@@ -91,7 +91,7 @@ class CloudStorageApplicationTests {
 		// You may have to modify the element "success-msg" and the sign-up 
 		// success message below depening on the rest of your code.
 		*/
-        Assertions.assertTrue(driver.findElement(By.id("success-msg")).getText().contains("You successfully signed up! Please continue to the"));
+        Assertions.assertTrue(driver.findElement(By.id("success-msg-redirect")).getText().contains("You successfully signed up"));
     }
 
 
@@ -139,7 +139,7 @@ class CloudStorageApplicationTests {
         doMockSignUp("Redirection", "Test", "RT", "123");
 
         // Check if we have been redirected to the sign up page.
-        Assertions.assertEquals("http://localhost:" + this.port + "/signup", driver.getCurrentUrl());
+        Assertions.assertEquals("http://localhost:" + this.port + "/login", driver.getCurrentUrl());
     }
 
     /**
